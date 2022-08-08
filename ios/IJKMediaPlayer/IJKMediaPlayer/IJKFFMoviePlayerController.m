@@ -79,6 +79,7 @@ static const char *kIJKFFRequiredFFmpegVersion = "ff4.0--ijk0.8.8--20210426--001
     int64_t _watchStartTick;
     int64_t _totalWatchDuration;
     NSTimeInterval _overallWatchDuration;
+    int64_t _startupLatency;
 }
 
 @synthesize view = _view;
@@ -1303,6 +1304,8 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
         case FFP_MSG_VIDEO_RENDERING_START: {
             NSLog(@"FFP_MSG_VIDEO_RENDERING_START:\n");
             _monitor.firstVideoFrameLatency = (int64_t)SDL_GetTickHR() - _monitor.prepareStartTick;
+            // Metrics
+            _startupLatency = _monitor.firstVideoFrameLatency;
             [[NSNotificationCenter defaultCenter]
              postNotificationName:IJKMPMoviePlayerFirstVideoFrameRenderedNotification
              object:self];
