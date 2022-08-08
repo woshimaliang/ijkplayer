@@ -79,6 +79,7 @@ static const char *kIJKFFRequiredFFmpegVersion = "ff4.0--ijk0.8.8--20210426--001
     int64_t _watchStartTick;
     int64_t _totalWatchDuration;
     NSTimeInterval _overallWatchDuration;
+    int64_t _totalBufferDuration;
     int64_t _startupLatency;
 }
 
@@ -1256,7 +1257,8 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
             NSLog(@"FFP_MSG_BUFFERING_END:\n");
 
             _monitor.lastPrerollDuration = (int64_t)SDL_GetTickHR() - _monitor.lastPrerollStartTick;
-
+            // Metrics
+            _totalBufferDuration += _monitor.lastPrerollDuration;
             _loadState = IJKMPMovieLoadStatePlayable | IJKMPMovieLoadStatePlaythroughOK;
             _isSeekBuffering = avmsg->arg1;
 
