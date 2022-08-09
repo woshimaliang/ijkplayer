@@ -94,11 +94,16 @@
     CGRect selfFrame = _rect;
     CGRect newFrame  = selfFrame;
 
-    newFrame.size.width   = selfFrame.size.width * 1 / 3;
-    newFrame.origin.x     = selfFrame.size.width * 2 / 3;
+    if (selfFrame.size.width > selfFrame.size.height) {
+        newFrame.size.width   = 300.0;
+        newFrame.origin.x     = selfFrame.size.width - 300.0;
+    } else {
+        newFrame.size.width   = 150.0;
+        newFrame.origin.x     = selfFrame.size.width - 150.0;
+    }
 
-    newFrame.size.height  = selfFrame.size.height * 8 / 8;
-    newFrame.origin.y    += selfFrame.size.height * 0 / 8;
+    newFrame.size.height  = selfFrame.size.height - 200;
+    newFrame.origin.y    = 60.0;
 
     self.tableView.frame = newFrame;
 }
@@ -107,7 +112,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 16.f;
+    return 20.f;
 }
 
 @end

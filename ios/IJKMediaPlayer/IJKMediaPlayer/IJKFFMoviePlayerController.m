@@ -370,6 +370,11 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
     return self;
 }
 
+- (void)layoutSubviews
+{
+    [_hudViewController setRect:UIApplication.sharedApplication.keyWindow.frame];
+}
+
 - (void)dealloc
 {
 //    [self unregisterApplicationObservers];

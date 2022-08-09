@@ -102,6 +102,15 @@
     self.mediaControl.delegatePlayer = self.player;
 }
 
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    self.mediaControl.topPanel.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, self.mediaControl.topPanel.frame.size.height);
+    if ([self.player isKindOfClass:[IJKFFMoviePlayerController class]]) {
+        IJKFFMoviePlayerController *player = self.player;
+        [player layoutSubviews];
+    }
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
@@ -112,6 +121,7 @@
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
+    
     
     [self.player shutdown];
     [self removeMovieNotificationObservers];
