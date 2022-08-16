@@ -62,6 +62,7 @@ typedef NS_ENUM(NSInteger, IJKMPMovieTimeOption) {
 };
 
 @protocol IJKMediaPlayback;
+@protocol IJKLogMetricDelegate;
 
 #pragma mark IJKMediaPlayback
 
@@ -100,6 +101,8 @@ typedef NS_ENUM(NSInteger, IJKMPMovieTimeOption) {
 
 @property (nonatomic) float playbackRate;
 @property (nonatomic) float playbackVolume;
+
+@property (nonatomic, weak) id<IJKLogMetricDelegate> metricDelegate;
 
 - (UIImage *)thumbnailImageAtCurrentTime;
 

@@ -19,6 +19,7 @@
 #import "IJKMediaControl.h"
 #import "IJKCommon.h"
 #import "IJKDemoHistory.h"
+#import "IJKAppDelegate.h"
 
 @implementation IJKVideoViewController
 
@@ -93,6 +94,7 @@
         [options setFormatOptionValue:self.manifest     forKey:@"manifest_string"];
     }
     self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:self.url withOptions:options];
+    self.player.metricDelegate = self;
     self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     self.player.view.frame = self.view.bounds;
     self.player.scalingMode = IJKMPMovieScalingModeAspectFit;
@@ -208,6 +210,18 @@
 - (IBAction)didSliderValueChanged
 {
     [self.mediaControl continueDragMediaSlider];
+}
+
+- (void)didLogSession:(IJKLogMetric *)metric
+{
+    NSLog(@"mmo testing: %@", metric.videoUrl);
+    NSLog(@"mmo testing: %lld", metric.firstVideoLatency);
+    NSLog(@"mmo testing: %lld", metric.preparedDuration);
+    NSLog(@"mmo testing: %lld", metric.timestamp);
+    
+    IJKAppDelegate* appDelegate = (IJKAppDelegate *)(UIApplication.sharedApplication.delegate);
+    [appDelegate.metrics addObject:metric];
+    NSLog(@"mmo: testing metrics: %ld", appDelegate.metrics.count);
 }
 
 - (void)loadStateDidChange:(NSNotification*)notification

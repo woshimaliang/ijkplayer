@@ -577,11 +577,27 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
     if (!_mediaPlayer)
         return;
 
+    [self captureMetrics];
     [self stopHudTimer];
     [self unregisterApplicationObservers];
     [self setScreenOn:NO];
 
     [self performSelectorInBackground:@selector(shutdownWaitStop:) withObject:self];
+}
+
+- (void)captureMetrics {
+    NSLog(@"mmo prepareDuration: %@", formatedDurationMilli(_monitor.prepareDuration));
+    NSLog(@"mmo firstVideoFrameLatency: %@", formatedDurationMilli(_monitor.firstVideoFrameLatency));
+    NSLog(@"mmo totalBufferDuration: %@", formatedDurationMilli(_totalBufferDuration));
+    NSLog(@"mmo totalWatchDuration: %@", formatedDurationMilli(_totalWatchDuration));
+    
+    IJKLogMetric *newMetric = [[IJKLogMetric alloc] init];
+    newMetric.preparedDuration = _monitor.prepareDuration;
+    newMetric.firstVideoLatency = _monitor.firstVideoFrameLatency;
+    newMetric.videoUrl = _urlString;
+    newMetric.timestamp = _monitor.prepareStartTick;
+    
+    [self.metricDelegate didLogSession:newMetric];
 }
 
 - (void)shutdownWaitStop:(IJKFFMoviePlayerController *) mySelf

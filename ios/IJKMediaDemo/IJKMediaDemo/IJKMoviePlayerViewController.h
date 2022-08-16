@@ -19,7 +19,7 @@
 #import <IJKMediaFramework/IJKMediaFramework.h>
 @class IJKMediaControl;
 
-@interface IJKVideoViewController : UIViewController
+@interface IJKVideoViewController : UIViewController <IJKLogMetricDelegate>
 
 @property(atomic,strong) NSURL *url;
 @property(strong,nonatomic) NSString* manifest;

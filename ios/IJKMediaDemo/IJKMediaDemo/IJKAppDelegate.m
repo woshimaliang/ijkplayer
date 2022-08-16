@@ -17,12 +17,22 @@
 
 #import "IJKAppDelegate.h"
 #import "IJKDemoMainViewController.h"
+#import <IJKMediaFramework/IJKMediaFramework.h>
+
+@interface IJKAppDelegate()
+
+@property (nonatomic) NSTimeInterval startTime;
+
+@end
 
 @implementation IJKAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    self.startTime = [[NSDate date] timeIntervalSince1970];
+    self.metrics = [[NSMutableArray alloc] init];
     
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:[[IJKDemoMainViewController alloc] init]];
     
@@ -34,6 +44,54 @@
     return YES;
 }
 
+- (void)recordMetrics
+{
+    NSMutableArray *metrics = self.metrics;
+    
+    NSString *metricsLogs = @"";
+    for (IJKLogMetric* metric in metrics) {
+        NSString *metricLine = [NSString stringWithFormat:@"%lld,%lld,%lld,%@", metric.timestamp, metric.preparedDuration, metric.firstVideoLatency, metric.videoUrl];
+        NSLog(@"mmo: metricLine: %@", metricLine);
+        if (metricsLogs.length == 0) {
+            NSLog(@"mmo: first line");
+            NSString *newString = [NSString stringWithFormat:@"%@\n", metricLine];
+            metricsLogs = newString;
+        } else {
+            NSLog(@"mmo: all other lines");
+            NSString *newString = [NSString stringWithFormat:@"%@%@\n", metricsLogs, metricLine];
+            metricsLogs = newString;
+        }
+    }
+    NSLog(@"mmo: self.startTime: %f", self.startTime);
+    NSLog(@"mmo: metricsLogs:\n%@", metricsLogs);
+    
+    if (metricsLogs.length > 0) {
+        NSData *content = [metricsLogs dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSString *newMetricFile = [NSString stringWithFormat:@"ijk-logs-%f.txt", self.startTime];
+        NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+        NSString *newFilePath = [documentsDirectory stringByAppendingPathComponent:newMetricFile];
+        
+        BOOL createFileSuccess = [NSFileManager.defaultManager createFileAtPath:newFilePath contents:content attributes:nil];
+        if (!createFileSuccess) {
+            NSLog(@"File cannot be created");
+        } else {
+            NSLog(@"Created new file: %@", newFilePath);
+        }
+    }
+
+
+//    NSError *writeFileError = nil;
+//    BOOL writeFileSuccess = [metricsLogs writeToFile:newFilePath
+//                                          atomically:NO
+//                                            encoding:NSStringEncodingConversionAllowLossy
+//                                               error:&writeFileError];
+//    if (!writeFileSuccess) {
+//        NSLog(@"Failed to write to file. %@", writeFileError);
+//    }
+
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -42,6 +100,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
+    [self recordMetrics];
     // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
     // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
 }
