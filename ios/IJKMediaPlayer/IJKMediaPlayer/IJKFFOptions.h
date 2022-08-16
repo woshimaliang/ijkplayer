@@ -70,6 +70,9 @@ struct IjkMediaPlayer;
 -(void)setSwsOptionIntValue:       (int64_t)value forKey:(NSString *)key;
 -(void)setPlayerOptionIntValue:    (int64_t)value forKey:(NSString *)key;
 
+// Allow unsafe options for testing absolute URLs in m3u8 local playlist
+-(void)setupPlayerForLocalHLS;
+
 @property(nonatomic) BOOL showHudView;
 
 @end

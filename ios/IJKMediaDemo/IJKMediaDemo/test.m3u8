@@ -1,0 +1,17 @@
+#EXTM3U
+#EXT-X-VERSION:6
+#EXT-X-TARGETDURATION:5
+#EXT-X-MEDIA-SEQUENCE:1
+#EXT-X-PLAYLIST-TYPE:VOD
+#EXT-X-MAP:URI="https://v.pinimg.com/videos/mc/hls/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39_720w.cmfv",BYTERANGE="842@0"
+#EXTINF:4.004,
+#EXT-X-BYTERANGE:153381@842
+https://v.pinimg.com/videos/mc/hls/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39_720w.cmfv
+#EXTINF:4.004,
+#EXT-X-BYTERANGE:95835@154223
+https://v.pinimg.com/videos/mc/hls/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39_720w.cmfv
+#EXTINF:2.002,
+#EXT-X-BYTERANGE:44591@250058
+https://v.pinimg.com/videos/mc/hls/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39_720w.cmfv
+#EXT-X-ENDLIST
+

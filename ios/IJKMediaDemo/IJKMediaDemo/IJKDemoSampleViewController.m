@@ -34,10 +34,35 @@
 
     self.title = @"M3U8";
 
+    NSURL *sampleHLS = [[NSBundle mainBundle] URLForResource:@"test" withExtension:@"m3u8"];
     NSMutableArray *sampleList = [[NSMutableArray alloc] init];
 
     [sampleList addObject:@[@"las url",
     @"{\"version\":\"1.0.0\",\"adaptationSet\":[{\"duration\":1000,\"id\":1,\"representation\":[{\"id\":1,\"codec\":\"avc1.64001e,mp4a.40.5\",\"url\":\"http://las-tech.org.cn/kwai/las-test_ld500d.flv\",\"backupUrl\":[],\"host\":\"las-tech.org.cn\",\"maxBitrate\":700,\"width\":640,\"height\":360,\"frameRate\":25,\"qualityType\":\"SMOOTH\",\"qualityTypeName\":\"流畅\",\"hidden\":false,\"disabledFromAdaptive\":false,\"defaultSelected\":false},{\"id\":2,\"codec\":\"avc1.64001f,mp4a.40.5\",\"url\":\"http://las-tech.org.cn/kwai/las-test_sd1000d.flv\",\"backupUrl\":[],\"host\":\"las-tech.org.cn\",\"maxBitrate\":1300,\"width\":960,\"height\":540,\"frameRate\":25,\"qualityType\":\"STANDARD\",\"qualityTypeName\":\"标清\",\"hidden\":false,\"disabledFromAdaptive\":false,\"defaultSelected\":true},{\"id\":3,\"codec\":\"avc1.64001f,mp4a.40.5\",\"url\":\"http://las-tech.org.cn/kwai/las-test.flv\",\"backupUrl\":[],\"host\":\"las-tech.org.cn\",\"maxBitrate\":2300,\"width\":1280,\"height\":720,\"frameRate\":30,\"qualityType\":\"HIGH\",\"qualityTypeName\":\"高清\",\"hidden\":false,\"disabledFromAdaptive\":false,\"defaultSelected\":false}]}]}"]];
+    
+    [sampleList addObject:@[@"Pinterest HLS local 240 first 230668812537517571",
+                            sampleHLS.absoluteString]];
+    [sampleList addObject:@[@"Pinterest mp4 230668812537517571",
+                            @"https://v.pinimg.com/videos/mc/720p/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39.mp4"]];
+    [sampleList addObject:@[@"Pinterest HLS 230668812537517571",
+                            @"https://v.pinimg.com/videos/mc/hls/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39.m3u8"]];
+    [sampleList addObject:@[@"Pinterest 720 230668812537517571",
+                            @"https://v.pinimg.com/videos/mc/hls/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39_720w.m3u8"]];
+    [sampleList addObject:@[@"Pinterest 240 230668812537517571",
+                            @"https://v.pinimg.com/videos/mc/hls/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39_240w.m3u8"]];
+    [sampleList addObject:@[@"Pinterest 1080 mp4",
+                            @"https://v1.pinimg.com/nickd/videos/big_buck_bunny_1080.mp4"]];
+    [sampleList addObject:@[@"Pinterest HLS 40s e8206527e1a1200fa6d5f9c19be189be_mobile",
+                            @"https://v.pinimg.com/videos/v2/hls/e8/20/65/e8206527e1a1200fa6d5f9c19be189be_mobile.m3u8"]];
+    [sampleList addObject:@[@"Pinterest HLS 40s e8206527e1a1200fa6d5f9c19be189be",
+                            @"https://v.pinimg.com/videos/hls/e8/20/65/e8206527e1a1200fa6d5f9c19be189be.m3u8"]];
+    [sampleList addObject:@[@"Pinterest h265 0236103b8b0d799ccc9592bca3ad924d",
+                            @"https://v.pinimg.com/videos/mc/h265/02/36/10/0236103b8b0d799ccc9592bca3ad924d.m3u8"]];
+    [sampleList addObject:@[@"Pinterest hls a944c799036feb7baf2beeef4fe277a4",
+                            @"https://v1.pinimg.com/videos/mc/hls/a9/44/c7/a944c799036feb7baf2beeef4fe277a4.m3u8"]];
+    [sampleList addObject:@[@"Pinterest mp4 a944c799036feb7baf2beeef4fe277a4",
+                            @"https://v1.pinimg.com/videos/mc/720p/a9/44/c7/a944c799036feb7baf2beeef4fe277a4.mp4"]];
+
     [sampleList addObject:@[@"bipbop basic master playlist",
                             @"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8"]];
     [sampleList addObject:@[@"bipbop basic 400x300 @ 232 kbps",
@@ -65,6 +90,7 @@
                             @"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/gear5/prog_index.m3u8"]];
     [sampleList addObject:@[@"bipbop advanced 22.050Hz stereo @ 40 kbps",
                             @"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_16x9/gear0/prog_index.m3u8"]];
+
 
     self.sampleList = sampleList;
 }

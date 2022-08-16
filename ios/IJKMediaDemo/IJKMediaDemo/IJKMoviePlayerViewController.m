@@ -83,6 +83,9 @@
     // [IJKFFMoviePlayerController checkIfPlayerVersionMatch:YES major:1 minor:0 micro:0];
 
     IJKFFOptions *options = [IJKFFOptions optionsByDefault];
+    if ([self.url.absoluteString containsString:@"test"]) {
+        [options setupPlayerForLocalHLS];
+    }
 
     if (self.manifest != nil){
         [options setPlayerOptionValue:@"ijklas"         forKey:@"iformat"];

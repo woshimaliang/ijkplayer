@@ -167,4 +167,10 @@
     [self setOptionIntValue:value forKey:key ofCategory:kIJKFFOptionCategoryPlayer];
 }
 
+-(void)setupPlayerForLocalHLS
+{
+    [self setFormatOptionIntValue:0     forKey:@"safe"];
+    [self setFormatOptionValue:@"crypto,http,tcp,https,tls,file"     forKey:@"protocol_whitelist"];
+}
+
 @end
