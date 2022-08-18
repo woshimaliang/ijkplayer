@@ -21,6 +21,12 @@
 #import "IJKDemoHistory.h"
 #import "IJKAppDelegate.h"
 
+@interface IJKVideoViewController()
+
+@property(nonatomic, readwrite) BOOL isIJKPlayer;
+
+@end
+
 @implementation IJKVideoViewController
 
 - (void)dealloc
@@ -33,8 +39,9 @@
     historyItem.title = title;
     historyItem.url = url;
     [[IJKDemoHistory instance] add:historyItem];
+    BOOL useIJKPlayer = ![title containsString:@"AVPlayer"];
     
-    [viewController presentViewController:[[IJKVideoViewController alloc] initWithURL:url] animated:YES completion:completion];
+    [viewController presentViewController:[[IJKVideoViewController alloc] initWithURL:url useIJKPlayer:useIJKPlayer] animated:YES completion:completion];
 }
 
 - (instancetype)initWithManifest: (NSString*)manifest_string {
@@ -46,10 +53,21 @@
     return self;
 }
 
-- (instancetype)initWithURL:(NSURL *)url {
+- (instancetype)initWithURL:(NSURL *)url
+{
     self = [self initWithNibName:@"IJKMoviePlayerViewController" bundle:nil];
     if (self) {
         self.url = url;
+        self.isIJKPlayer = YES;
+    }
+    return self;
+}
+
+- (instancetype)initWithURL:(NSURL *)url useIJKPlayer:(BOOL)useIJKPlayer {
+    self = [self initWithNibName:@"IJKMoviePlayerViewController" bundle:nil];
+    if (self) {
+        self.url = url;
+        self.isIJKPlayer = useIJKPlayer;
     }
     return self;
 }
@@ -93,8 +111,14 @@
         [options setPlayerOptionIntValue:0              forKey:@"find_stream_info"];
         [options setFormatOptionValue:self.manifest     forKey:@"manifest_string"];
     }
-    self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:self.url withOptions:options];
-    self.player.metricDelegate = self;
+    
+    if (self.isIJKPlayer) {
+        self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:self.url withOptions:options];
+        self.player.metricDelegate = self;
+    } else {
+        self.player = [[IJKAVMoviePlayerController alloc] initWithContentURLString:self.url.absoluteString];
+    }
+
     self.player.view.autoresizingMask = UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight;
     self.player.view.frame = self.view.bounds;
     self.player.scalingMode = IJKMPMovieScalingModeAspectFit;

@@ -42,7 +42,9 @@
     
     [sampleList addObject:@[@"Pinterest HLS local 240 first 230668812537517571",
                             sampleHLS.absoluteString]];
-    [sampleList addObject:@[@"Pinterest mp4 230668812537517571",
+    [sampleList addObject:@[@"ijkplayer Pinterest mp4 230668812537517571",
+                            @"https://v.pinimg.com/videos/mc/720p/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39.mp4"]];
+    [sampleList addObject:@[@"AVPlayer Pinterest mp4 230668812537517571",
                             @"https://v.pinimg.com/videos/mc/720p/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39.mp4"]];
     [sampleList addObject:@[@"Pinterest HLS 230668812537517571",
                             @"https://v.pinimg.com/videos/mc/hls/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39.m3u8"]];
@@ -50,7 +52,9 @@
                             @"https://v.pinimg.com/videos/mc/hls/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39_720w.m3u8"]];
     [sampleList addObject:@[@"Pinterest 240 230668812537517571",
                             @"https://v.pinimg.com/videos/mc/hls/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39_240w.m3u8"]];
-    [sampleList addObject:@[@"Pinterest 1080 mp4",
+    [sampleList addObject:@[@"ijkplayer Pinterest 1080 mp4",
+                            @"https://v1.pinimg.com/nickd/videos/big_buck_bunny_1080.mp4"]];
+    [sampleList addObject:@[@"AVPlayer Pinterest 1080 mp4",
                             @"https://v1.pinimg.com/nickd/videos/big_buck_bunny_1080.mp4"]];
     [sampleList addObject:@[@"Pinterest HLS 40s e8206527e1a1200fa6d5f9c19be189be_mobile",
                             @"https://v.pinimg.com/videos/v2/hls/e8/20/65/e8206527e1a1200fa6d5f9c19be189be_mobile.m3u8"]];
@@ -60,7 +64,9 @@
                             @"https://v.pinimg.com/videos/mc/h265/02/36/10/0236103b8b0d799ccc9592bca3ad924d.m3u8"]];
     [sampleList addObject:@[@"Pinterest hls a944c799036feb7baf2beeef4fe277a4",
                             @"https://v1.pinimg.com/videos/mc/hls/a9/44/c7/a944c799036feb7baf2beeef4fe277a4.m3u8"]];
-    [sampleList addObject:@[@"Pinterest mp4 a944c799036feb7baf2beeef4fe277a4",
+    [sampleList addObject:@[@"ijkplayer Pinterest mp4 a944c799036feb7baf2beeef4fe277a4",
+                            @"https://v1.pinimg.com/videos/mc/720p/a9/44/c7/a944c799036feb7baf2beeef4fe277a4.mp4"]];
+    [sampleList addObject:@[@"AVPlayer Pinterest mp4 a944c799036feb7baf2beeef4fe277a4",
                             @"https://v1.pinimg.com/videos/mc/720p/a9/44/c7/a944c799036feb7baf2beeef4fe277a4.mp4"]];
 
     [sampleList addObject:@[@"bipbop basic master playlist",
@@ -133,13 +139,15 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     NSArray *item = self.sampleList[indexPath.row];
+    NSString *title = item[0];
     NSString *url_str = item[1];
     
     if ([url_str containsString:@"adaptationSet"]) {
         [self.navigationController presentViewController:[[IJKVideoViewController alloc] initWithManifest:url_str] animated:YES completion:^{}];
     } else{
         NSURL   *url  = [NSURL URLWithString:item[1]];
-        [self.navigationController presentViewController:[[IJKVideoViewController alloc] initWithURL:url] animated:YES completion:^{}];
+        BOOL useIJKPlayer = ![title containsString:@"AVPlayer"];
+        [self.navigationController presentViewController:[[IJKVideoViewController alloc] initWithURL:url useIJKPlayer:useIJKPlayer] animated:YES completion:^{}];
     }
 }
 

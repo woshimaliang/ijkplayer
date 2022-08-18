@@ -24,8 +24,10 @@
 @property(atomic,strong) NSURL *url;
 @property(strong,nonatomic) NSString* manifest;
 @property(atomic, retain) id<IJKMediaPlayback> player;
+@property(nonatomic, readonly) BOOL isIJKPlayer;
 
 - (id)initWithURL:(NSURL *)url;
+- (id)initWithURL:(NSURL *)url useIJKPlayer:(BOOL)useIJKPlayer;
 - (id)initWithManifest:(NSString*)manifest_string;
 
 + (void)presentFromViewController:(UIViewController *)viewController withTitle:(NSString *)title URL:(NSURL *)url completion:(void(^)())completion;
