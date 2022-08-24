@@ -14,6 +14,8 @@
 @property int64_t firstVideoLatency;
 @property bool isWarm;
 @property NSString *videoUrl;
+@property NSString *videoPlayer;
+
 @end
 
 @protocol IJKLogMetricDelegate <NSObject>

@@ -50,7 +50,7 @@
     
     NSString *metricsLogs = @"";
     for (IJKLogMetric* metric in metrics) {
-        NSString *metricLine = [NSString stringWithFormat:@"%lld,%lld,%lld,%@", metric.timestamp, metric.preparedDuration, metric.firstVideoLatency, metric.videoUrl];
+        NSString *metricLine = [metric description];
         NSLog(@"mmo: metricLine: %@", metricLine);
         if (metricsLogs.length == 0) {
             NSLog(@"mmo: first line");

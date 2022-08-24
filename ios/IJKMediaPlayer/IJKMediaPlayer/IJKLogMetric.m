@@ -10,4 +10,9 @@
 
 @implementation IJKLogMetric
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"%lld,%lld,%lld,%@,%@", self.timestamp, self.preparedDuration, self.firstVideoLatency, self.videoUrl, self.videoPlayer];
+}
+
 @end
