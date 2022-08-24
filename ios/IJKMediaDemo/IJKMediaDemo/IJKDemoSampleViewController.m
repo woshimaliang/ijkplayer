@@ -42,10 +42,17 @@
     
     [sampleList addObject:@[@"Pinterest HLS local 240 first 230668812537517571",
                             sampleHLS.absoluteString]];
-    [sampleList addObject:@[@"ijkplayer Pinterest mp4 230668812537517571",
+    [sampleList addObject:@[@"AVPlayer QR code mp4 1104718983571535565", @"https://v.pinimg.com/videos/mc/720p/bd/7c/09/bd7c09f21a7312833d8e95ca07a1d471.mp4"]];
+    [sampleList addObject:@[@"ijk QR code mp4 1104718983571535565", @"https://v.pinimg.com/videos/mc/720p/bd/7c/09/bd7c09f21a7312833d8e95ca07a1d471.mp4"]];
+    [sampleList addObject:@[@"AVPlayer QR code HLS 1104718983571535565", @"https://v.pinimg.com/    videos/mc/hls/bd/7c/09/bd7c09f21a7312833d8e95ca07a1d471.m3u8"]];
+    [sampleList addObject:@[@"ijk QR code HLS 1104718983571535565", @"https://v.pinimg.com/    videos/mc/hls/bd/7c/09/bd7c09f21a7312833d8e95ca07a1d471.m3u8"
+]];
+    [sampleList addObject:@[@"ijkplayer mp4 230668812537517571 Pinterest",
                             @"https://v.pinimg.com/videos/mc/720p/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39.mp4"]];
-    [sampleList addObject:@[@"AVPlayer Pinterest mp4 230668812537517571",
+    [sampleList addObject:@[@"AVPlayer mp4 Pinterest 230668812537517571",
                             @"https://v.pinimg.com/videos/mc/720p/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39.mp4"]];
+    [sampleList addObject:@[@"AVPlayer HLS Pinterest 230668812537517571",
+                            @"https://v.pinimg.com/videos/mc/hls/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39.m3u8"]];
     [sampleList addObject:@[@"Pinterest HLS 230668812537517571",
                             @"https://v.pinimg.com/videos/mc/hls/8f/fc/aa/8ffcaaf8580fcb67f71a1faafdd3ab39.m3u8"]];
     [sampleList addObject:@[@"Pinterest 720 230668812537517571",
@@ -68,6 +75,8 @@
                             @"https://v1.pinimg.com/videos/mc/720p/a9/44/c7/a944c799036feb7baf2beeef4fe277a4.mp4"]];
     [sampleList addObject:@[@"AVPlayer Pinterest mp4 a944c799036feb7baf2beeef4fe277a4",
                             @"https://v1.pinimg.com/videos/mc/720p/a9/44/c7/a944c799036feb7baf2beeef4fe277a4.mp4"]];
+    [sampleList addObject:@[@"AVPlayer Pinterest HLS 40s e8206527e1a1200fa6d5f9c19be189be_mobile",
+                            @"https://v.pinimg.com/videos/v2/hls/e8/20/65/e8206527e1a1200fa6d5f9c19be189be_mobile.m3u8"]];
 
     [sampleList addObject:@[@"bipbop basic master playlist",
                             @"http://devimages.apple.com.edgekey.net/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8"]];
