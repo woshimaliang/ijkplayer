@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+CFTimeInterval MonotonicTimeGetCurrent();
+
 @interface IJKLogMetric : NSObject
 @property int64_t timestamp;
 @property int64_t preparedDuration;

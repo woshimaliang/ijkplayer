@@ -77,6 +77,9 @@
 #import "IJKNotificationManager.h"
 #include "ijksdl/ios/ijksdl_ios.h"
 
+// Metrics
+#import "IJKLogMetric.h"
+
 // avoid float equal compare
 inline static bool isFloatZero(float value)
 {
@@ -148,6 +151,8 @@ static void *KVO_AVPlayerItem_playbackBufferEmpty       = &KVO_AVPlayerItem_play
     float _playbackRate;
     float _playbackVolume;
     // Metrics
+    CFTimeInterval _viewControllerInitialized;
+    CFTimeInterval _videoStartTime;
     CFTimeInterval _prepareStartTick;
     CFTimeInterval _prepareDuration;
 }
@@ -178,6 +183,7 @@ static IJKAVMoviePlayerController* instance;
 
         _playUrl = aUrl;
 
+        _viewControllerInitialized = MonotonicTimeGetCurrent();
         _avView = [[IJKAVPlayerLayerView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         self.view = _avView;
 
@@ -303,7 +309,18 @@ static IJKAVMoviePlayerController* instance;
 
 - (void)shutdown
 {
-    NSLog(@"mmo: _prepareDuration: %f", _prepareDuration);
+    NSLog(@"mmo: IJKAVMoviePlayerController shutdown _prepareDuration: %f", _prepareDuration);
+    
+    CFTimeInterval tempPrepareDuration = _videoStartTime - _viewControllerInitialized;
+    NSLog(@"mmo: IJKAVMoviePlayerController shutdown tempPrepareDuration: %f", tempPrepareDuration);
+    
+    IJKLogMetric *newMetric = [[IJKLogMetric alloc] init];
+    newMetric.preparedDuration = _prepareDuration * 1000;
+    newMetric.firstVideoLatency = -1;
+    newMetric.videoUrl = _playUrl.absoluteString;
+    newMetric.timestamp = _prepareStartTick;
+    newMetric.videoPlayer = @"AVPlayer";
+    [self.metricDelegate didLogSession:newMetric];
     _isShutdown = YES;
     [self stop];
     
@@ -571,8 +588,8 @@ static IJKAVMoviePlayerController* instance;
     if (!_player)
     {
         /* Get a new AVPlayer initialized to play the specified player item. */
-        _player = [AVPlayer playerWithPlayerItem:_playerItem];
         _prepareStartTick = MonotonicTimeGetCurrent();
+        _player = [AVPlayer playerWithPlayerItem:_playerItem];
         _playerKVO = [[IJKKVOController alloc] initWithTarget:_player];
         
         /* Observe the AVPlayer "currentItem" property to find out when any
@@ -766,7 +783,8 @@ static IJKAVMoviePlayerController* instance;
                  [playerItem status] == AVPlayerItemStatusReadyToPlay,
                  its duration can be fetched from the item. */
                 dispatch_once(&_readyToPlayToken, ^{
-                    _prepareDuration = MonotonicTimeGetCurrent() - _prepareStartTick;
+                    _videoStartTime = MonotonicTimeGetCurrent();
+                    _prepareDuration = _videoStartTime - _prepareStartTick;
                     
                     [_avView setPlayer:_player];
                     
@@ -1085,18 +1103,6 @@ static IJKAVMoviePlayerController* instance;
 - (void)applicationWillTerminate
 {
     NSLog(@"IJKAVMoviePlayerController:applicationWillTerminate: %d\n", (int)[UIApplication sharedApplication].applicationState);
-}
-
-#pragma mark Time
-
-CFTimeInterval MonotonicTimeGetCurrent()
-{
-    struct timespec t;
-    int res = clock_gettime(CLOCK_MONOTONIC, &t);
-    if (__builtin_expect(res != noErr, 0)) {
-        [NSException raise:NSInternalInconsistencyException format:@"Error in clock_gettime(): %s", strerror(res)];
-    }
-    return t.tv_sec + t.tv_nsec / (CFTimeInterval)NSEC_PER_SEC;
 }
 
 @end

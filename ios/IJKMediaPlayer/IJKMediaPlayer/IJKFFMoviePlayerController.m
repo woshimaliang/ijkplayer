@@ -76,6 +76,9 @@ static const char *kIJKFFRequiredFFmpegVersion = "ff4.0--ijk0.8.8--20210426--001
     IJKSDLHudViewController *_hudViewController;
     
     // Metrics
+    CFTimeInterval _viewControllerInitialized;
+    CFTimeInterval _videoStartTime;
+    CFTimeInterval _playerStartTimeInterval;
     int64_t _watchStartTick;
     int64_t _totalWatchDuration;
     NSTimeInterval _overallWatchDuration;
@@ -209,6 +212,7 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
         _urlString = aUrlString;
 
         // init player
+        _viewControllerInitialized = MonotonicTimeGetCurrent();
         _mediaPlayer = ijkmp_ios_create(media_player_msg_loop);
         _msgPool = [[IJKFFMoviePlayerMessagePool alloc] init];
         IJKWeakHolder *weakHolder = [IJKWeakHolder new];
@@ -406,6 +410,7 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
     ijkmp_set_option(_mediaPlayer, IJKMP_OPT_CATEGORY_FORMAT, "safe", "0"); // for concat demuxer
 
     _monitor.prepareStartTick = (int64_t)SDL_GetTickHR();
+    _playerStartTimeInterval = MonotonicTimeGetCurrent();
     ijkmp_prepare_async(_mediaPlayer);
 }
 
@@ -586,16 +591,20 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
 }
 
 - (void)captureMetrics {
-    NSLog(@"mmo prepareDuration: %@", formatedDurationMilli(_monitor.prepareDuration));
-    NSLog(@"mmo firstVideoFrameLatency: %@", formatedDurationMilli(_monitor.firstVideoFrameLatency));
-    NSLog(@"mmo totalBufferDuration: %@", formatedDurationMilli(_totalBufferDuration));
-    NSLog(@"mmo totalWatchDuration: %@", formatedDurationMilli(_totalWatchDuration));
+    NSLog(@"mmo captureMetrics prepareDuration: %@", formatedDurationMilli(_monitor.prepareDuration));
+    NSLog(@"mmo captureMetrics firstVideoFrameLatency: %@", formatedDurationMilli(_monitor.firstVideoFrameLatency));
+    NSLog(@"mmo captureMetrics totalBufferDuration: %@", formatedDurationMilli(_totalBufferDuration));
+    NSLog(@"mmo captureMetrics totalWatchDuration: %@", formatedDurationMilli(_totalWatchDuration));
+    
+    CFTimeInterval tempPrepareDuration = _videoStartTime - _viewControllerInitialized;
+    NSLog(@"mmo: captureMetrics tempPrepareDuration: %f", tempPrepareDuration);
     
     IJKLogMetric *newMetric = [[IJKLogMetric alloc] init];
     newMetric.preparedDuration = _monitor.prepareDuration;
     newMetric.firstVideoLatency = _monitor.firstVideoFrameLatency;
     newMetric.videoUrl = _urlString;
-    newMetric.timestamp = _monitor.prepareStartTick;
+    newMetric.timestamp = _playerStartTimeInterval;
+    newMetric.videoPlayer = @"ijkplayer";
     
     [self.metricDelegate didLogSession:newMetric];
 }
@@ -1327,6 +1336,7 @@ inline static void fillMetaInternal(NSMutableDictionary *meta, IjkMediaMeta *raw
         case FFP_MSG_VIDEO_RENDERING_START: {
             NSLog(@"FFP_MSG_VIDEO_RENDERING_START:\n");
             _monitor.firstVideoFrameLatency = (int64_t)SDL_GetTickHR() - _monitor.prepareStartTick;
+            _videoStartTime = MonotonicTimeGetCurrent();
             // Metrics
             _startupLatency = _monitor.firstVideoFrameLatency;
             [[NSNotificationCenter defaultCenter]

@@ -16,3 +16,15 @@
 }
 
 @end
+
+#pragma mark Time
+
+CFTimeInterval MonotonicTimeGetCurrent()
+{
+    struct timespec t;
+    int res = clock_gettime(CLOCK_MONOTONIC, &t);
+    if (__builtin_expect(res != noErr, 0)) {
+        [NSException raise:NSInternalInconsistencyException format:@"Error in clock_gettime(): %s", strerror(res)];
+    }
+    return t.tv_sec + t.tv_nsec / (CFTimeInterval)NSEC_PER_SEC;
+}
