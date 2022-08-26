@@ -376,7 +376,9 @@ void IJKFFIOStatCompleteRegister(void (*cb)(const char *url,
 
 - (void)layoutSubviews
 {
-    [_hudViewController setRect:UIApplication.sharedApplication.keyWindow.frame];
+    CGPoint absolutePoint = [self.view.superview convertPoint:self.view.frame.origin toView:nil];
+    CGRect adjustFrame = CGRectMake(absolutePoint.x, absolutePoint.y, self.view.frame.size.width, self.view.frame.size.height);
+    [_hudViewController setRect:adjustFrame];
 }
 
 - (void)dealloc
