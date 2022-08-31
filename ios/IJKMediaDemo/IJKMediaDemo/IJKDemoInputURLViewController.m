@@ -22,10 +22,23 @@
 @interface IJKDemoInputURLViewController () <UITextViewDelegate>
 
 @property(nonatomic,strong) IBOutlet UITextView *textView;
+@property NSInteger testState;
 
 @end
 
 @implementation IJKDemoInputURLViewController
+
+- (instancetype)initForSplitView {
+    IJKDemoInputURLViewController *splitSelf = [self init];
+    splitSelf.testState = 1;
+    return splitSelf;
+}
+
+- (instancetype)initForGridView {
+    IJKDemoInputURLViewController *splitSelf = [self init];
+    splitSelf.testState = 2;
+    return splitSelf;
+}
 
 - (instancetype)init {
     self = [super init];
@@ -46,8 +59,22 @@
         return;
     }
     NSURL *url = [NSURL URLWithString:self.textView.text];
-
-    [self.navigationController pushViewController:[[IJKVideoGridViewController alloc] initWithURL:[NSURL URLWithString:self.textView.text]] animated:YES];
+    
+    UIViewController *videoController = nil;
+    
+    switch (self.testState) {
+        case 0:
+            videoController = [[IJKVideoViewController alloc] initWithURL:url];
+            break;
+        case 1:
+            videoController = [[TwoVideoPlayerController alloc] initWithURL:url];
+            break;
+        case 2:
+            videoController = [[IJKVideoGridViewController alloc] initWithURL:url];
+            break;
+    }
+     
+    [self.navigationController pushViewController:videoController animated:YES];
 }
 
 @end

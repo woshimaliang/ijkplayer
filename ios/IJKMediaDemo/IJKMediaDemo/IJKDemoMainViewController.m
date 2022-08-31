@@ -43,6 +43,8 @@
                                  @"Local Folder",
                                  @"Movie Picker",
                                  @"Input URL",
+                                 @"Input URL Split View",
+                                 @"Input URL Grid View",
                                  @"Scan QRCode",
                                  @"Online Samples",
                                  ];
@@ -143,12 +145,20 @@
                 case 2:
                     [self.navigationController pushViewController:[[IJKDemoInputURLViewController alloc] init] animated:YES];
                     break;
-
+                
                 case 3:
-                    [self.navigationController pushViewController:[[IJKQRCodeScanViewController alloc] init] animated:YES];
+                    [self.navigationController pushViewController:[[IJKDemoInputURLViewController alloc] initForSplitView] animated:YES];
                     break;
 
                 case 4:
+                    [self.navigationController pushViewController:[[IJKDemoInputURLViewController alloc] initForGridView] animated:YES];
+                    break;
+                
+                case 5:
+                    [self.navigationController pushViewController:[[IJKQRCodeScanViewController alloc] init] animated:YES];
+                    break;
+
+                case 6:
                     [self.navigationController pushViewController:[[IJKDemoSampleViewController alloc] init] animated:YES];
                     break;
 

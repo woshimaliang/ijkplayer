@@ -18,4 +18,7 @@
 
 @interface IJKDemoInputURLViewController : UIViewController
 
+- (instancetype)initForSplitView;
+- (instancetype)initForGridView;
+
 @end
