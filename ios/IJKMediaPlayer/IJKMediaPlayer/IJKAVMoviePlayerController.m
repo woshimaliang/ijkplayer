@@ -187,7 +187,7 @@ static IJKAVMoviePlayerController* instance;
         _playUrl = aUrl;
 
         _viewControllerInitialized = MonotonicTimeGetCurrent();
-        _avView = [[IJKAVPlayerLayerView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        _avView = [[IJKAVPlayerLayerView alloc] initWithFrame:self.view.bounds];
         _avView.delegate = self;
         self.view = _avView;
 
@@ -213,6 +213,12 @@ static IJKAVMoviePlayerController* instance;
         _notificationManager = [[IJKNotificationManager alloc] init];
     }
     return self;
+}
+
+- (void)layoutSubviews
+{
+    NSLog(@"mmo testing: %@", NSStringFromCGRect(self.view.superview.bounds));
+    self.view.frame = self.view.superview.bounds;
 }
 
 + (id)getInstance:(NSString *)aUrl

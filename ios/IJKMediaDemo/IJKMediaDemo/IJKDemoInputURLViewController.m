@@ -17,6 +17,7 @@
 #import "IJKDemoInputURLViewController.h"
 #import "IJKMoviePlayerViewController.h"
 #import "TwoVideoPlayerController.h"
+#import "IJKVideoGridViewController.h"
 
 @interface IJKDemoInputURLViewController () <UITextViewDelegate>
 
@@ -45,13 +46,8 @@
         return;
     }
     NSURL *url = [NSURL URLWithString:self.textView.text];
-    NSString *scheme = [[url scheme] lowercaseString];
 
-    if ([scheme isEqualToString:@"http"]
-        || [scheme isEqualToString:@"https"]
-        || [scheme isEqualToString:@"rtmp"]) {
-        [self.navigationController pushViewController:[[TwoVideoPlayerController alloc] initWithURL:[NSURL URLWithString:self.textView.text]] animated:YES];
-    }
+    [self.navigationController pushViewController:[[IJKVideoGridViewController alloc] initWithURL:[NSURL URLWithString:self.textView.text]] animated:YES];
 }
 
 @end

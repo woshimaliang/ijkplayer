@@ -76,9 +76,9 @@
 
 @property (nonatomic, weak) id<IJKLogMetricDelegate> metricDelegate;
 
-
 - (id)initWithContentURL:(NSURL *)aUrl;
 - (id)initWithContentURLString:(NSString *)aUrl;
 + (id)getInstance:(NSString *)aUrl;
+- (void)layoutSubviews;
 
 @end

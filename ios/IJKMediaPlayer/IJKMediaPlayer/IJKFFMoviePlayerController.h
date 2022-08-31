@@ -94,6 +94,7 @@ typedef enum IJKLogLevel {
 - (BOOL)isPlaying;
 - (int64_t)trafficStatistic;
 - (float)dropFrameRate;
+- (void)layoutSubviews;
 
 - (void)setPauseInBackground:(BOOL)pause;
 - (BOOL)isVideoToolboxOpen;
@@ -139,7 +140,6 @@ typedef enum IJKLogLevel {
 @property (nonatomic, retain) id<IJKMediaNativeInvokeDelegate> nativeInvokeDelegate;
 
 - (void)didShutdown;
-- (void)layoutSubviews;
 
 #pragma mark KVO properties
 @property (nonatomic, readonly) IJKFFMonitor *monitor;

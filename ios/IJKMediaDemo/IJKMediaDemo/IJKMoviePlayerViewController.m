@@ -127,8 +127,10 @@
 
     self.view.autoresizesSubviews = YES;
     [self.view addSubview:self.player.view];
+    [self.player layoutSubviews];
     NSLog(@"mmo VideoViewController viewDidLoad after addSubview %f", MonotonicTimeGetCurrent());
     [self.view addSubview:self.mediaControl];
+    [self.mediaControl hide];
 
     self.mediaControl.delegatePlayer = self.player;
 }
@@ -136,10 +138,7 @@
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     self.mediaControl.topPanel.frame = CGRectMake(0.0, 0.0, self.view.frame.size.width, self.mediaControl.topPanel.frame.size.height);
-    if ([self.player isKindOfClass:[IJKFFMoviePlayerController class]]) {
-        IJKFFMoviePlayerController *player = self.player;
-        [player layoutSubviews];
-    }
+    [self.player layoutSubviews];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
