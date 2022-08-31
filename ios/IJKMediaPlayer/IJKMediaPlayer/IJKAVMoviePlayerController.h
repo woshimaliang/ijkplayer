@@ -70,9 +70,12 @@
 
 #import "IJKMediaPlayback.h"
 
-@interface IJKAVMoviePlayerController : NSObject <IJKMediaPlayback>
+@protocol IJKAVPlayerLayerViewDelegate;
+
+@interface IJKAVMoviePlayerController : NSObject <IJKMediaPlayback, IJKAVPlayerLayerViewDelegate>
 
 @property (nonatomic, weak) id<IJKLogMetricDelegate> metricDelegate;
+
 
 - (id)initWithContentURL:(NSURL *)aUrl;
 - (id)initWithContentURLString:(NSString *)aUrl;

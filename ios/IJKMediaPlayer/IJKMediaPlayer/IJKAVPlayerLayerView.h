@@ -72,9 +72,16 @@
 
 @class AVPlayer;
 
+@protocol IJKAVPlayerLayerViewDelegate <NSObject>
+
+-(void)viewDidCallLayoutSubviews;
+
+@end
+
 @interface IJKAVPlayerLayerView: UIView
 
 @property (nonatomic, strong) AVPlayer* player;
+@property (nonatomic, weak) id<IJKAVPlayerLayerViewDelegate> delegate;
 
 - (void)setPlayer:(AVPlayer*)player;
 - (void)setVideoFillMode:(NSString *)fillMode;

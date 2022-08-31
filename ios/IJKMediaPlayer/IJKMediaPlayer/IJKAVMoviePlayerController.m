@@ -152,7 +152,10 @@ static void *KVO_AVPlayerItem_playbackBufferEmpty       = &KVO_AVPlayerItem_play
     float _playbackVolume;
     // Metrics
     CFTimeInterval _viewControllerInitialized;
+    CFTimeInterval _viewAddedAsSubview;
     CFTimeInterval _videoStartTime;
+    CFTimeInterval _videoIsPlaybackLikelyToKeepUp;
+    CFTimeInterval _videoIsPlaybackLikelyToKeepUpTick;
     CFTimeInterval _prepareStartTick;
     CFTimeInterval _prepareDuration;
 }
@@ -185,6 +188,7 @@ static IJKAVMoviePlayerController* instance;
 
         _viewControllerInitialized = MonotonicTimeGetCurrent();
         _avView = [[IJKAVPlayerLayerView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+        _avView.delegate = self;
         self.view = _avView;
 
         // TODO:
@@ -309,16 +313,18 @@ static IJKAVMoviePlayerController* instance;
 
 - (void)shutdown
 {
-    NSLog(@"mmo: IJKAVMoviePlayerController shutdown _prepareDuration: %f", _prepareDuration);
+    NSLog(@"mmo: IJKAVMoviePlayerController shutdown _prepareDuration: %f", _prepareDuration * 1000);
+    NSLog(@"mmo: IJKAVMoviePlayerController shutdown _videoIsPlaybackLikelyToKeepUp: %f", _videoIsPlaybackLikelyToKeepUp * 1000);
     
-    CFTimeInterval tempPrepareDuration = _videoStartTime - _viewControllerInitialized;
-    NSLog(@"mmo: IJKAVMoviePlayerController shutdown tempPrepareDuration: %f", tempPrepareDuration);
+    CFTimeInterval timeFromInitUntilView = _videoIsPlaybackLikelyToKeepUpTick - _viewControllerInitialized;
+    NSLog(@"mmo: IJKAVMoviePlayerController shutdown timeFromInitUntilView: %f", timeFromInitUntilView);
     
     IJKLogMetric *newMetric = [[IJKLogMetric alloc] init];
     newMetric.preparedDuration = _prepareDuration * 1000;
-    newMetric.firstVideoLatency = -1;
+    newMetric.firstVideoLatency = _videoIsPlaybackLikelyToKeepUp * 1000;
     newMetric.videoUrl = _playUrl.absoluteString;
     newMetric.timestamp = _prepareStartTick;
+    newMetric.timeFromInitUntilView = timeFromInitUntilView * 1000;
     newMetric.videoPlayer = @"AVPlayer";
     [self.metricDelegate didLogSession:newMetric];
     _isShutdown = YES;
@@ -784,7 +790,7 @@ static IJKAVMoviePlayerController* instance;
                  its duration can be fetched from the item. */
                 dispatch_once(&_readyToPlayToken, ^{
                     _videoStartTime = MonotonicTimeGetCurrent();
-                    _prepareDuration = _videoStartTime - _prepareStartTick;
+                    _prepareDuration = _videoStartTime - _viewControllerInitialized;
                     
                     [_avView setPlayer:_player];
                     
@@ -852,6 +858,11 @@ static IJKAVMoviePlayerController* instance;
         AVPlayerItem *playerItem = (AVPlayerItem *)object;
         NSLog(@"KVO_AVPlayerItem_playbackLikelyToKeepUp: %@\n", playerItem.isPlaybackLikelyToKeepUp ? @"YES" : @"NO");
         [self fetchLoadStateFromItem:playerItem];
+        if (playerItem.isPlaybackLikelyToKeepUp == YES) {
+            _videoIsPlaybackLikelyToKeepUpTick = MonotonicTimeGetCurrent();
+            _videoIsPlaybackLikelyToKeepUp = _videoIsPlaybackLikelyToKeepUpTick - _viewControllerInitialized;
+            NSLog(@"mmo Recording video isPlaybackLikelyToKeepUp %f", _videoIsPlaybackLikelyToKeepUp);
+        }
         [self didLoadStateChange];
     }
     else if (context == KVO_AVPlayerItem_playbackBufferEmpty) {
@@ -1103,6 +1114,13 @@ static IJKAVMoviePlayerController* instance;
 - (void)applicationWillTerminate
 {
     NSLog(@"IJKAVMoviePlayerController:applicationWillTerminate: %d\n", (int)[UIApplication sharedApplication].applicationState);
+}
+
+#pragma mark IJKAVPlayerLayerViewDelegate
+
+- (void)viewDidCallLayoutSubviews
+{
+    _viewAddedAsSubview = MonotonicTimeGetCurrent();
 }
 
 @end

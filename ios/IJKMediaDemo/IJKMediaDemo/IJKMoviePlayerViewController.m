@@ -112,6 +112,7 @@
         [options setFormatOptionValue:self.manifest     forKey:@"manifest_string"];
     }
     
+    NSLog(@"mmo VideoViewController viewDidLoad before init %f", MonotonicTimeGetCurrent());
     if (self.isIJKPlayer) {
         self.player = [[IJKFFMoviePlayerController alloc] initWithContentURL:self.url withOptions:options];
     } else {
@@ -126,6 +127,7 @@
 
     self.view.autoresizesSubviews = YES;
     [self.view addSubview:self.player.view];
+    NSLog(@"mmo VideoViewController viewDidLoad after addSubview %f", MonotonicTimeGetCurrent());
     [self.view addSubview:self.mediaControl];
 
     self.mediaControl.delegatePlayer = self.player;

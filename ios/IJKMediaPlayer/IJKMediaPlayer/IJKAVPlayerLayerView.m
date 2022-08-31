@@ -85,6 +85,12 @@
     return self;
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    [self.delegate viewDidCallLayoutSubviews];
+}
+
 + (Class)layerClass
 {
     return [AVPlayerLayer class];

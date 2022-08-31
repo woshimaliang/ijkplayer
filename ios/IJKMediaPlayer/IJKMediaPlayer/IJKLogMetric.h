@@ -14,6 +14,7 @@ CFTimeInterval MonotonicTimeGetCurrent();
 @property int64_t timestamp;
 @property int64_t preparedDuration;
 @property int64_t firstVideoLatency;
+@property int64_t timeFromInitUntilView;
 @property bool isWarm;
 @property NSString *videoUrl;
 @property NSString *videoPlayer;

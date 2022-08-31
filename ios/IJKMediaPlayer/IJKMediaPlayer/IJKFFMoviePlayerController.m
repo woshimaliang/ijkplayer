@@ -598,14 +598,15 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
     NSLog(@"mmo captureMetrics totalBufferDuration: %@", formatedDurationMilli(_totalBufferDuration));
     NSLog(@"mmo captureMetrics totalWatchDuration: %@", formatedDurationMilli(_totalWatchDuration));
     
-    CFTimeInterval tempPrepareDuration = _videoStartTime - _viewControllerInitialized;
-    NSLog(@"mmo: captureMetrics tempPrepareDuration: %f", tempPrepareDuration);
+    CFTimeInterval timeFromInitUntilView = _videoStartTime - _viewControllerInitialized;
+    NSLog(@"mmo: captureMetrics timeFromInitUntilView: %f", timeFromInitUntilView);
     
     IJKLogMetric *newMetric = [[IJKLogMetric alloc] init];
     newMetric.preparedDuration = _monitor.prepareDuration;
     newMetric.firstVideoLatency = _monitor.firstVideoFrameLatency;
     newMetric.videoUrl = _urlString;
     newMetric.timestamp = _playerStartTimeInterval;
+    newMetric.timeFromInitUntilView = timeFromInitUntilView * 1000;
     newMetric.videoPlayer = @"ijkplayer";
     
     [self.metricDelegate didLogSession:newMetric];
