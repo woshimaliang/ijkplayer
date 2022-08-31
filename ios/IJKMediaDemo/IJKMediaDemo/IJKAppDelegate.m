@@ -29,6 +29,11 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+#if IOS_SIMULATOR
+    self.isSimulator = YES;
+#else
+    self.isSimulator = NO;
+#endif
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     self.startTime = [[NSDate date] timeIntervalSince1970];

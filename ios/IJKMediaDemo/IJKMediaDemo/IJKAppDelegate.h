@@ -22,5 +22,6 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UIViewController *viewController;
 @property (strong, nonatomic) NSMutableArray *metrics;
+@property BOOL isSimulator;
 
 @end
