@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface IJKVideoCollectionViewCell : UICollectionViewCell
 
+@property (nonatomic, readonly) NSURL *url;
+
 + (NSString *)reuseIdentifier;
 - (void)clear;
 - (void)loadVideo:(NSURL *)url useIJKPlayer:(BOOL)useIJKPlayer;

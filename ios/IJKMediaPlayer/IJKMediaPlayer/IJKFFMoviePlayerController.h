@@ -88,6 +88,7 @@ typedef enum IJKLogLevel {
                   withGLView:(UIView<IJKSDLGLViewProtocol> *)glView;
 
 - (void)prepareToPlay;
+- (void)switchURL:(NSURL *)url andPlay:(BOOL)prepareToPlay;
 - (void)play;
 - (void)pause;
 - (void)stop;

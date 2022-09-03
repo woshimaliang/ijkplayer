@@ -580,6 +580,24 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
     }
 }
 
+- (void)switchURL:(NSURL *)url andPlay:(BOOL)prepareToPlay
+{
+    if (!_mediaPlayer)
+        return;
+    
+    [self setScreenOn:NO];
+    [self stopHudTimer];
+    ijkmp_stop(_mediaPlayer);
+    ijkmp_shutdown(_mediaPlayer);
+    
+    NSString *aUrlString = [url isFileURL] ? [url path] : [url absoluteString];
+    _urlString = aUrlString;
+    
+    if (prepareToPlay) {
+        [self prepareToPlay];
+    }
+}
+
 - (void)shutdown
 {
     if (!_mediaPlayer)

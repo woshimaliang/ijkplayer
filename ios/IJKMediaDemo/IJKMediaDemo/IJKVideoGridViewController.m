@@ -53,7 +53,13 @@
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     IJKVideoCollectionViewCell *videoCell = (IJKVideoCollectionViewCell *)cell;
-    [videoCell loadVideo:self.url useIJKPlayer:YES];
+    NSURL *url = nil;
+    if ([videoCell.url.absoluteString isEqualToString:@"https://v1.pinimg.com/videos/mc/720p/a9/44/c7/a944c799036feb7baf2beeef4fe277a4.mp4"]) {
+        url = [NSURL URLWithString:@"https://v1.pinimg.com/videos/mc/720p/bd/7c/09/bd7c09f21a7312833d8e95ca07a1d471.mp4"];
+    } else {
+        url = [NSURL URLWithString:@"https://v1.pinimg.com/videos/mc/720p/a9/44/c7/a944c799036feb7baf2beeef4fe277a4.mp4"];
+    }
+    [videoCell loadVideo:url useIJKPlayer:YES];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath

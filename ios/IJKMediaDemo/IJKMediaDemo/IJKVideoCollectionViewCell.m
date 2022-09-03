@@ -14,7 +14,7 @@
 @interface IJKVideoCollectionViewCell()
 
 @property IJKVideoViewController *videoVC;
-@property NSURL *url;
+@property (nonatomic, readwrite) NSURL *url;
 @property NSArray<NSLayoutConstraint*>* portraitConstraints;
 @property NSArray<NSLayoutConstraint*>* landscapeConstraints;
 @end
@@ -28,10 +28,15 @@
 
 - (void)loadVideo:(NSURL *)url useIJKPlayer:(BOOL)useIJKPlayer
 {
-    self.url = url;
-    self.videoVC = [[IJKVideoViewController alloc] initWithURL:url useIJKPlayer:useIJKPlayer];
-    [self addSubview:self.videoVC.view];
-    [self setupLayoutConstraints];
+    if (self.videoVC == nil) {
+        self.url = url;
+        self.videoVC = [[IJKVideoViewController alloc] initWithURL:url useIJKPlayer:useIJKPlayer];
+        [self addSubview:self.videoVC.view];
+        [self setupLayoutConstraints];
+    } else {
+        self.url = url;
+        [self.videoVC switchURL:url];
+    }
 }
 
 - (void)prepareForReuse
@@ -42,8 +47,7 @@
 
 - (void)clear
 {
-    [self.videoVC.view removeFromSuperview];
-    self.videoVC = nil;
+    [self.videoVC.player stop];
 }
 
 - (void)layoutSubviews

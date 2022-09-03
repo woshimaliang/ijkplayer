@@ -172,6 +172,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)switchURL:(NSURL *)url
+{
+    [self.player.view removeFromSuperview];
+    [self.player switchURL:url andPlay:YES];
+    [self.view addSubview:self.player.view];
+}
+
 #pragma mark IBAction
 
 - (IBAction)onClickMediaControl:(id)sender

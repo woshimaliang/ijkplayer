@@ -28,6 +28,7 @@
 
 - (id)initWithURL:(NSURL *)url;
 - (id)initWithURL:(NSURL *)url useIJKPlayer:(BOOL)useIJKPlayer;
+- (void)switchURL:(NSURL *)url;
 - (id)initWithManifest:(NSString*)manifest_string;
 
 + (void)presentFromViewController:(UIViewController *)viewController withTitle:(NSString *)title URL:(NSURL *)url completion:(void(^)())completion;
