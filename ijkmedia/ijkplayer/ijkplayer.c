@@ -547,6 +547,26 @@ int ijkmp_stop(IjkMediaPlayer *mp)
     return retval;
 }
 
+void ijkmp_reset_l(IjkMediaPlayer *mp)
+{
+    assert(mp);
+    
+//    ffp_reset_internal(mp->ffplayer);
+    av_freep(&mp->data_source);
+    ijkmp_change_state_l(mp, MP_STATE_IDLE);
+}
+
+void ijkmp_reset(IjkMediaPlayer *mp)
+{
+    assert(mp);
+
+    MPTRACE("ijkmp_reset()\n");
+    pthread_mutex_lock(&mp->mutex);
+    ijkmp_reset_l(mp);
+    pthread_mutex_unlock(&mp->mutex);
+    MPTRACE("ijkmp_reset()=void\n");
+}
+
 bool ijkmp_is_playing(IjkMediaPlayer *mp)
 {
     assert(mp);

@@ -589,6 +589,7 @@ inline static int getPlayerOption(IJKFFOptionCategory category)
     [self stopHudTimer];
     ijkmp_stop(_mediaPlayer);
     ijkmp_shutdown(_mediaPlayer);
+    ijkmp_reset(_mediaPlayer);
     
     NSString *aUrlString = [url isFileURL] ? [url path] : [url absoluteString];
     _urlString = aUrlString;
