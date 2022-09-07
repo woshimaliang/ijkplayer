@@ -10,9 +10,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef enum IJKVideoGridType {
+    IJKVideoGridType_GridViewFourIJK = 0,
+    IJKVideoGridType_GridViewAVPlayerIJKSideBySide   = 1,
+    IJKVideoGridType_FullPageIJK    = 2,
+} IJKVideoGridType;
+
 @interface IJKVideoGridViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 
-- (instancetype)initWithURL:(NSURL *)url;
+- (instancetype)initWithURL:(NSURL *)url withState:(IJKVideoGridType)type;
 
 @end
 

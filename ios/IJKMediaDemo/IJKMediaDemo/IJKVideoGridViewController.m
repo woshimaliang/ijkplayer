@@ -14,12 +14,13 @@
 @property UICollectionView* collectionView;
 @property UICollectionViewFlowLayout* flowLayout;
 @property NSURL* url;
+@property IJKVideoGridType gridType;
 
 @end
 
 @implementation IJKVideoGridViewController
 
-- (instancetype)initWithURL:(NSURL *)url
+- (instancetype)initWithURL:(NSURL *)url withState:(IJKVideoGridType)type
 {
     self = [super init];
     if (self) {
@@ -28,6 +29,7 @@
 #else
         self.url = url;
 #endif
+        self.gridType = type;
     }
     return self;
 }
@@ -53,7 +55,14 @@
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
 {
     IJKVideoCollectionViewCell *videoCell = (IJKVideoCollectionViewCell *)cell;
-    [videoCell loadVideo:self.url useIJKPlayer:YES];
+    BOOL useIJKPlayer = YES;
+    if (self.gridType == IJKVideoGridType_GridViewAVPlayerIJKSideBySide) {
+        if (indexPath.item % 2 == 0) {
+            useIJKPlayer = NO;
+        }
+    }
+    
+    [videoCell loadVideo:self.url useIJKPlayer:useIJKPlayer];
 }
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath
@@ -69,6 +78,9 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    if (self.gridType == IJKVideoGridType_FullPageIJK) {
+        return 5;
+    }
     return 100;
 }
 
@@ -79,6 +91,9 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.gridType == IJKVideoGridType_FullPageIJK) {
+        return self.view.frame.size;
+    }
     return CGSizeMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2);
 }
 

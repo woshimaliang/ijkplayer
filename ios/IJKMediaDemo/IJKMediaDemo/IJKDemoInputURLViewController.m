@@ -22,23 +22,18 @@
 @interface IJKDemoInputURLViewController () <UITextViewDelegate>
 
 @property(nonatomic,strong) IBOutlet UITextView *textView;
-@property NSInteger testState;
+@property IJKTestState testState;
 
 @end
 
 @implementation IJKDemoInputURLViewController
 
-- (instancetype)initForSplitView {
-    IJKDemoInputURLViewController *splitSelf = [self init];
-    splitSelf.testState = 1;
-    return splitSelf;
+- (instancetype)initWithTestState:(IJKTestState)testState {
+    IJKDemoInputURLViewController *variation = [self init];
+    variation.testState = testState;
+    return variation;
 }
 
-- (instancetype)initForGridView {
-    IJKDemoInputURLViewController *splitSelf = [self init];
-    splitSelf.testState = 2;
-    return splitSelf;
-}
 
 - (instancetype)init {
     self = [super init];
@@ -63,15 +58,26 @@
     UIViewController *videoController = nil;
     
     switch (self.testState) {
-        case 0:
+        case IJKTestState_Default: {
             videoController = [[IJKVideoViewController alloc] initWithURL:url];
             break;
-        case 1:
+        }
+        case IJKTestState_SplitView: {
             videoController = [[TwoVideoPlayerController alloc] initWithURL:url];
             break;
-        case 2:
-            videoController = [[IJKVideoGridViewController alloc] initWithURL:url];
+        }
+        case IJKTestState_GridViewFourIJK: {
+            videoController = [[IJKVideoGridViewController alloc] initWithURL:url withState:IJKVideoGridType_GridViewFourIJK];
             break;
+        }
+        case IJKTestState_GridViewAVPlayerIJKSideBySide: {
+            videoController = [[IJKVideoGridViewController alloc] initWithURL:url withState:IJKVideoGridType_GridViewAVPlayerIJKSideBySide];
+            break;
+        }
+        case IJKTestState_FullPageIJK: {
+            videoController = [[IJKVideoGridViewController alloc] initWithURL:url withState:IJKVideoGridType_FullPageIJK];
+            break;
+        }
     }
      
     [self.navigationController pushViewController:videoController animated:YES];

@@ -62,7 +62,11 @@ CFTimeInterval MonotonicTimeGetCurrent2()
 {
     self = [super init];
     if (self) {
+#if IOS_SIMULATOR
+        self.url = [NSURL URLWithString:@"https://v1.pinimg.com/videos/mc/720p/a9/44/c7/a944c799036feb7baf2beeef4fe277a4.mp4"];
+#else
         self.url = url;
+#endif
     }
     return self;
 }

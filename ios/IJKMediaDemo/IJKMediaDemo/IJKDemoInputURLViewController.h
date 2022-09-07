@@ -16,9 +16,17 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum IJKTestState {
+    IJKTestState_Default = 0,
+    IJKTestState_SplitView = 1,
+
+    IJKTestState_GridViewFourIJK = 2,
+    IJKTestState_GridViewAVPlayerIJKSideBySide   = 3,
+    IJKTestState_FullPageIJK    = 4,
+} IJKTestState;
+
 @interface IJKDemoInputURLViewController : UIViewController
 
-- (instancetype)initForSplitView;
-- (instancetype)initForGridView;
+- (instancetype)initWithTestState:(IJKTestState)testState;
 
 @end

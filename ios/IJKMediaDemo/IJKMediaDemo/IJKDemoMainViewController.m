@@ -47,6 +47,8 @@
                                  @"Input URL Grid View",
                                  @"Scan QRCode",
                                  @"Online Samples",
+                                 @"Input URL Grid AVPlayer vs IJKPlayer",
+                                 @"Input URL Single Full screen",
                                  ];
     
     NSURL *documentsUrl = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
@@ -143,15 +145,15 @@
                     break;
 
                 case 2:
-                    [self.navigationController pushViewController:[[IJKDemoInputURLViewController alloc] init] animated:YES];
+                    [self.navigationController pushViewController:[[IJKDemoInputURLViewController alloc] initWithTestState:IJKTestState_Default] animated:YES];
                     break;
                 
                 case 3:
-                    [self.navigationController pushViewController:[[IJKDemoInputURLViewController alloc] initForSplitView] animated:YES];
+                    [self.navigationController pushViewController:[[IJKDemoInputURLViewController alloc] initWithTestState:IJKTestState_SplitView] animated:YES];
                     break;
 
                 case 4:
-                    [self.navigationController pushViewController:[[IJKDemoInputURLViewController alloc] initForGridView] animated:YES];
+                    [self.navigationController pushViewController:[[IJKDemoInputURLViewController alloc] initWithTestState:IJKTestState_GridViewFourIJK] animated:YES];
                     break;
                 
                 case 5:
@@ -161,6 +163,18 @@
                 case 6:
                     [self.navigationController pushViewController:[[IJKDemoSampleViewController alloc] init] animated:YES];
                     break;
+
+                case 7: {
+                    IJKDemoInputURLViewController *inputURLVC = [[IJKDemoInputURLViewController alloc] initWithTestState:IJKTestState_GridViewAVPlayerIJKSideBySide];
+                    [self.navigationController pushViewController:inputURLVC animated:YES];
+                    break;
+                }
+
+                case 8: {
+                    IJKDemoInputURLViewController *inputURLVC = [[IJKDemoInputURLViewController alloc] initWithTestState:IJKTestState_FullPageIJK];
+                    [self.navigationController pushViewController:inputURLVC animated:YES];
+                    break;
+                }
 
                 default:
                     break;
