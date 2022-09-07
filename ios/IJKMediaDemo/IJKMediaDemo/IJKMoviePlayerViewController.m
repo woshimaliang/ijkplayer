@@ -174,9 +174,7 @@
 
 - (void)switchURL:(NSURL *)url
 {
-    [self.player.view removeFromSuperview];
     [self.player switchURL:url andPlay:YES];
-    [self.view addSubview:self.player.view];
 }
 
 #pragma mark IBAction
